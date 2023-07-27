@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>🌝 Moon</title>
+</head>
+
+<body>
+    <div class="container p-5">
+        <div class="grid gap-3">
+            {% if error_msg %}
+            <div class="p-2 row alert alert-danger">
+                {{error_msg}}
+            </div>
+            {% endif %}
+            <div class="p-2 row">
+                <div class="row">
+                    <div class="input-group col-lg">
+                        <span class="input-group-text">SQLite Query:</span>
+                        <textarea id="q" name="q" class="form-control"></textarea>
+                    </div>
+                    <div class="col-sm">
+                        <button id="submit-query" type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+            <div class="p-2 row">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <span id="table-tab" class="nav-link active">Table</span>
+                    </li>
+                    <li class="nav-item">
+                        <span id="chart-tab" class="nav-link">Chart</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="p-2 row">
+                <div id="table">
+                    <h1>Table</h1>
+                </div>
+                <div id="chart">
+                    <h1>Chart</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(() => {
+        // hide chart by default
+        $("#chart").hide();
+    });
+
+    $("#table-tab").click(() => {
+        $("#table-tab").addClass("active");
+        $("#chart-tab").removeClass("active");
+        $("#table").show();
+        $("#chart").hide();
+    });
+
+    $("#chart-tab").click(() => {
+        $("#table-tab").removeClass("active");
+        $("#chart-tab").addClass("active");
+        $("#table").hide();
+        $("#chart").show();
+    });
+
+    $("#submit-query").click(() => {
+        submitQuery();
+    })
+
+    function submitQuery() {
+        const query = $("#q").val();
+
+        // Make an ajax request to the "/q" endpoint
+        $.ajax({
+            url: `/q?q=${query}`,
+            type: "GET",
+            success: (response) => {
+                if (Object.keys(response).length !== 0) {
+                    $("#table").DataTable({
+                        columns: response.columns.map((c) => {
+                            return {
+                                title: c,
+                                data: c,
+                            };
+                        }),
+                        destroy: true,
+                        data: data,
+                        select: true,
+                        paging: true,
+                        pageLength: 10,
+                        searching: false,
+                        info: false,
+                        bLengthChange: false,
+                        ordering: false,
+                        autoWidth: false,
+                    });
+                }
+            },
+            error: (error) => {
+                console.log(error);
+            },
+        })
+    }
+</script>
+
+</html>
