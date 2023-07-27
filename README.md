@@ -5,13 +5,14 @@ This is a set of scripts for interfacing with the binance dataset.
 Simply type `python main.py --help` to see the documentation. The output is as follows:
 
 ```
- Usage: main.py [OPTIONS]
-
- Download the monthly data from Binance.
+ Usage: main.py [OPTIONS] COMMAND [ARGS]...
 
 ╭─ Options ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --refresh    --no-refresh      Specifies whether to attempt to download the latest binance data. [default: no-refresh]           │
-│ --help                         Show this message and exit.                                                                       │
+│ --help          Show this message and exit.                                                                                      │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ download                 Download the monthly data from Binance.                                                                 │
+│ make-db                  Create the SQLite database.                                                                             │
+│ webui                    (Experimental) Start the web UI.                                                                        │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
-
