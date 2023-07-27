@@ -8,7 +8,7 @@ from rich.progress import track
 from binance import BINANCE_DATA_HEADER, TOKEN_PAIRS
 
 
-def download_binance_data():
+def download_binance_data(refresh: bool = False):
     # Use the nosync path for cloud providers on local machines. This prevents it from exploding personal storage.
     DATA_DIR = "data.nosync"
     COMBINED_DIR = os.path.join(DATA_DIR, "combined")
@@ -16,7 +16,7 @@ def download_binance_data():
     # download the monthly data (and daily data for the current month) for the listed pairs
     # i.e. k-line data at 1-minute intervals, as Milionis et al. used close prices at the end of each minute
     data_dumper = BinanceDataDumper(DATA_DIR)
-    if not os.path.exists(DATA_DIR):
+    if not os.path.exists(DATA_DIR) or refresh:
         data_dumper.dump_data(tickers=TOKEN_PAIRS)
 
     for pair in track(TOKEN_PAIRS, description="Filtering data into folders..."):
