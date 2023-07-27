@@ -1,0 +1,4 @@
+binance_data*
+data*
+venv
+.env
