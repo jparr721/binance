@@ -1,5 +1,5 @@
 ## Binance
-This is a set of scripts for interfacing with the binance dataset.
+This is a set of scripts for generating, storing into a local database, and exposing via a UI the data from Binance.
 
 ### Using:
 Simply type `python main.py --help` to see the documentation. The output is as follows:
