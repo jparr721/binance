@@ -161,5 +161,4 @@ cython_debug/
 #.idea/
 
 # Local data folders
-binance_data*
 data*
