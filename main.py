@@ -6,7 +6,9 @@ app = typer.Typer(add_completion=False)
 
 
 @app.command(help="Download the monthly data from Binance.")
-def download(refresh=typer.Argument(False, help="Specifies whether to attempt to download the latest binance data.")):
+def download(
+    refresh: bool = typer.Option(False, help="Specifies whether to attempt to download the latest binance data.")
+):
     download_binance_data(refresh)
 
 

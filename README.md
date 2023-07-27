@@ -5,15 +5,13 @@ This is a set of scripts for interfacing with the binance dataset.
 Simply type `python main.py --help` to see the documentation. The output is as follows:
 
 ```
- Usage: main.py [OPTIONS] [REFRESH]
+ Usage: main.py [OPTIONS]
 
  Download the monthly data from Binance.
 
-╭─ Arguments ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│   refresh      [REFRESH]  Specifies whether to attempt to download the latest binance data. [default: False]                     │
-╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ╭─ Options ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --help          Show this message and exit.                                                                                      │
+│ --refresh    --no-refresh      Specifies whether to attempt to download the latest binance data. [default: no-refresh]           │
+│ --help                         Show this message and exit.                                                                       │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
