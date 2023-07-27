@@ -9,6 +9,7 @@ from binance import BINANCE_DATA_HEADER, TOKEN_PAIRS
 
 
 def download_binance_data():
+    # Use the nosync path for cloud providers on local machines. This prevents it from exploding personal storage.
     DATA_DIR = "data.nosync"
     COMBINED_DIR = os.path.join(DATA_DIR, "combined")
 
