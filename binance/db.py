@@ -18,6 +18,7 @@ def csv_to_sqlite(csv_file: str, table_name: str, db_file: str):
 
     # Convert the open_time to a valid timestamp
     df["open_time"] = pd.to_datetime(df["open_time"], unit="ms")
+    df["close_time"] = pd.to_datetime(df["close_time"], unit="ms")
 
     # All tables have the same schema, so just make them uniformly
     schema = f"""CREATE TABLE {table_name} (
@@ -35,11 +36,10 @@ def csv_to_sqlite(csv_file: str, table_name: str, db_file: str):
             taker_buy_quote_asset_volume REAL,
             ignore REAL)"""
 
-    # Write the DataFrame to the SQLite database by iterating the rows and inserting
-    # them one by one
+    # Pandas build-in generates the schema and inserts it for us. This gives us high performance insertions.
     df.to_sql(table_name, conn, if_exists="replace", index=False, schema=schema)
 
-    # Commit the changes and close the database connection
+    # Commit the changes
     conn.commit()
 
     # Close the database connection

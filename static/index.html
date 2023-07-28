@@ -16,15 +16,15 @@
             </div>
             {% endif %}
             <div class="p-2 row">
-                <div class="row">
-                    <div class="input-group col-lg">
+                <form action="submit_query" method="get">
+                    <div class="input-group col">
                         <span class="input-group-text">SQLite Query:</span>
-                        <textarea id="q" name="q" class="form-control"></textarea>
+                        <textarea id="q" name="q" class="form-control">{{q}}</textarea>
                     </div>
-                    <div class="col-sm">
+                    <div class="col">
                         <button id="submit-query" type="submit" class="btn btn-primary">Submit</button>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="p-2 row">
                 <ul class="nav nav-tabs">
@@ -38,7 +38,13 @@
             </div>
             <div class="p-2 row">
                 <div id="table">
-                    <h1>Table</h1>
+                    <div class="col">
+                        {% block content %}
+                        <div>
+                            {{query_html | safe}}
+                        </div>
+                        {% endblock %}
+                    </div>
                 </div>
                 <div id="chart">
                     <h1>Chart</h1>
@@ -59,6 +65,14 @@
     $(document).ready(() => {
         // hide chart by default
         $("#chart").hide();
+
+        $("#query_table").DataTable({
+            destroy: true,
+            select: true,
+            paging: true,
+            pageLength: 10,
+            autoWidth: true,
+        });
     });
 
     $("#table-tab").click(() => {
@@ -75,16 +89,12 @@
         $("#chart").show();
     });
 
-    $("#submit-query").click(() => {
-        submitQuery();
-    })
-
     function submitQuery() {
         const query = $("#q").val();
 
         // Make an ajax request to the "/q" endpoint
         $.ajax({
-            url: `/q?q=${query}`,
+            url: `/q?query=${query}`,
             type: "GET",
             success: (response) => {
                 if (Object.keys(response).length !== 0) {

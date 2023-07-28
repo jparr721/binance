@@ -41,6 +41,7 @@ def webui(port: int = typer.Option(8080, help="The port to run the web UI on."))
     # Create the sqlite database from the data.nosync/combined folder
     init_db(False)
 
+    logger.info(f"Starting web UI on localhost:{port}")
     webui_app.run(host="0.0.0.0", port=port, debug=True)
 
 
