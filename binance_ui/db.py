@@ -1,12 +1,12 @@
 import os
 import sqlite3
-from typing import Final
+from typing import Final, List
 
 import pandas as pd
 
-from binance import BINANCE_CODE_DIR, BINANCE_COMBINED_DATA_DIR
+from binance_ui import BINANCE_CODE_DIR, BINANCE_KLINES_COMBINED_DATA_DIR
 
-DATABASE_PATH: Final[str] = os.path.join(BINANCE_CODE_DIR, "..", "binance.sqlite")
+DATABASE_PATH: Final[str] = os.path.join(BINANCE_CODE_DIR, "..", "binance.sqlite.nosync")
 
 
 def csv_to_sqlite(csv_file: str, table_name: str, db_file: str):
@@ -47,9 +47,9 @@ def csv_to_sqlite(csv_file: str, table_name: str, db_file: str):
 
 
 def create_database():
-    for csv_file in os.listdir(BINANCE_COMBINED_DATA_DIR):
+    for csv_file in os.listdir(BINANCE_KLINES_COMBINED_DATA_DIR):
         csv_to_sqlite(
-            os.path.join(BINANCE_COMBINED_DATA_DIR, csv_file),
+            os.path.join(BINANCE_KLINES_COMBINED_DATA_DIR, csv_file),
             # Remove the extension and just keep the ticker symbol
             csv_file.replace("-1m-all.csv", ""),
             DATABASE_PATH,
@@ -67,3 +67,8 @@ def query_sqlite(query: str):
     conn.close()
 
     return df
+
+
+def get_db_names() -> List[str]:
+    df_database_names = query_sqlite("SELECT name FROM sqlite_master WHERE type='table';")
+    return list(df_database_names["name"])

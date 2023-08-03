@@ -1,12 +1,10 @@
 import os
-import webbrowser
 
 import typer
 from loguru import logger
 
-from binance.binance_data_dl import download_binance_data
-from binance.db import DATABASE_PATH, create_database
-from binance.webui import app as webui_app
+from binance_data_dl import download_binance_data_klines
+from binance_ui.db import DATABASE_PATH, create_database
 
 app = typer.Typer(add_completion=False)
 
@@ -34,17 +32,13 @@ def init_db(refresh):
 def download(
     refresh: bool = typer.Option(False, help="Whether or not to attempt to download the latest binance data.")
 ):
-    download_binance_data(refresh)
+    download_binance_data_klines(refresh)
 
 
-@app.command(help="(Experimental) Start the web UI.")
-def webui(port: int = typer.Option(8080, help="The port to run the web UI on.")):
-    # Create the sqlite database from the data.nosync/combined folder
+@app.command(help="Start Web UI")
+def web():
     init_db(False)
-
-    logger.info(f"Starting web UI on http://localhost:{port}")
-    webbrowser.open(f"http://localhost:{port}")
-    webui_app.run(host="0.0.0.0", port=port, debug=True)
+    os.system("reflex run")
 
 
 @app.command(help="Create the SQLite database.")
