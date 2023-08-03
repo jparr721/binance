@@ -38,6 +38,8 @@ def download(
 @app.command(help="Start Web UI")
 def web():
     init_db(False)
+    if not os.path.exists(".web"):
+        os.system("reflex init")
     os.system("reflex run")
 
 
